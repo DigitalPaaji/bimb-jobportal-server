@@ -1,0 +1,85 @@
+user siginup POST
+http://localhost:8000/api/v1/user/auth/signup
+
+{fullname,email,password}
+
+user verify POST
+http://localhost:8000/api/v1/user/auth/verify
+{fullname,email,password,otp}
+
+
+
+user Login POST
+http://localhost:8000/api/v1/user/auth/login
+{email,password}
+
+user Login by google   POST
+http://localhost:8000/api/v1/user/auth/login-google
+{token}
+
+
+
+
+user logout GET
+http://localhost:8000/api/v1/user/auth/logout
+
+
+user get GET
+http://localhost:8000/api/v1/user/auth
+
+
+
+user get UpdateUser PUT
+http://localhost:8000/api/v1/user/auth/update
+
+{
+    fullname,phone,gender,dateOfBirth,address,image,resume
+}
+
+
+
+
+
+
+get All category GET
+http://localhost:8000/api/v1/user/job/category
+
+
+get ALL subcategory  GET
+http://localhost:8000/api/v1/user/job/sub-category
+
+
+
+
+
+
+get feture jobs GET
+http://localhost:8000/api/v1/user/job/feturejob
+
+
+get Urgent job  GET
+
+http://localhost:8000/api/v1/user/job/isurgent 
+
+
+
+
+
+
+get all Jobs  GET
+http://localhost:8000/api/v1/user/job/alljobs?page&limit&search&category&subcategory&JobType&WorkMode
+export type JobType =
+  | "FULL_TIME"
+  | "PART_TIME"
+  | "CONTRACT"
+  | "INTERNSHIP"
+  | "FREELANCE";
+
+export type WorkMode =
+  | "ONSITE"
+  | "REMOTE"
+  | "HYBRID";
+
+
+
+
