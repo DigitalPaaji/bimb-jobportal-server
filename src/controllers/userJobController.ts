@@ -77,7 +77,7 @@ export const getJobs =  async (req: Request,res: Response,next: NextFunction) =>
 const [jobs, totalJobs] = await Promise.all([
       Job.find(filter)
         .select(
-          "title companyName slug companyLogo status applicationsCount  category subcategory jobType workMode isFeatured isUrgent createdAt"
+          "location experience salary   title  companyName slug companyLogo status   category subcategory jobType workMode createdAt"
         )
         .populate("category", "title")
         .populate("subcategory", "title")
@@ -130,7 +130,7 @@ export const getCategory=  async (req: Request,res: Response,next: NextFunction)
 export const getFetureJob = async (req:Request,res:Response,next:NextFunction)=>{
   try {
    const jobs = await Job.find({isFeatured:true}).select(
-          "title companyName companyLogo status applicationsCount  category subcategory jobType workMode isFeatured isUrgent createdAt"
+          "location experience salary   title  companyName slug companyLogo status   category subcategory jobType workMode createdAt"
         )
         .populate("category", "title")
         .populate("subcategory", "title")
@@ -148,7 +148,7 @@ export const getFetureJob = async (req:Request,res:Response,next:NextFunction)=>
 export const getUrgentJob = async (req:Request,res:Response,next:NextFunction)=>{
   try {
    const jobs = await Job.find({isUrgent:true}).select(
-          "title companyName companyLogo status applicationsCount  category subcategory jobType workMode isFeatured isUrgent createdAt"
+          "location experience salary   title  companyName slug companyLogo status   category subcategory jobType workMode createdAt"
         )
         .populate("category", "title")
         .populate("subcategory", "title")
