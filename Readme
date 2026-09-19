@@ -61,7 +61,9 @@ get Urgent job  GET
 
 http://localhost:8000/api/v1/user/job/isurgent 
 
+get single job  GET
 
+http://localhost:8000/api/v1/user/job/singlejob/slug 
 
 
 

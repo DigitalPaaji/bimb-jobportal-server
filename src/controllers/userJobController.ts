@@ -77,7 +77,7 @@ export const getJobs =  async (req: Request,res: Response,next: NextFunction) =>
 const [jobs, totalJobs] = await Promise.all([
       Job.find(filter)
         .select(
-          "title companyName companyLogo status applicationsCount  category subcategory jobType workMode isFeatured isUrgent createdAt"
+          "title companyName slug companyLogo status applicationsCount  category subcategory jobType workMode isFeatured isUrgent createdAt"
         )
         .populate("category", "title")
         .populate("subcategory", "title")
@@ -163,6 +163,27 @@ export const getUrgentJob = async (req:Request,res:Response,next:NextFunction)=>
   }
 }
 
+export const getSingleJob = async(req:Request,res:Response,next:NextFunction)=>{
+  try {
+    const slug = req.params.slug;
+   const job  = await Job.findOne({slug,status:"PUBLISHED"}).populate("category", "title")
+        .populate("subcategory", "title")
+  if(!job){
+return res.status(404).json({
+  success:false,message:"Job not found"
+})
+  }
+
+job.views = job.views + 1
+
+await job.save()
+return res.status(200).json({success:true,job})
+
+
+  } catch (error) {
+    next(error)
+  }
+}
 
 
 
