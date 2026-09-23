@@ -343,7 +343,7 @@ export const UpdateJob = async (req: Request,res: Response,next: NextFunction) =
     
 
 job.title =title
-job.description =title
+job.description =description
 job.jobType =jobType
 job.workMode =workMode
 job.companyName =companyName
@@ -369,7 +369,7 @@ job.isFeatured =isFeatured=="true"? true:false
 job.isUrgent =isUrgent=="true"? true:false
 
 if (companyLogo=="null") {
-  console.log(companyLogo,companyLogoNew)
+ 
   
   if (job.companyLogo) { await removeImage(job.companyLogo); }
  job.companyLogo = null; 

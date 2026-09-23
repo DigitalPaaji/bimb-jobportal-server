@@ -344,6 +344,27 @@ return res.status(200).json({ success: true, message: "Article updated successfu
 
 
 
+export const getmyuserArticles=async(req:Request,res:Response,next:NextFunction)=>{
+try {
+ 
+  const articles = await Article.find({status:"PUBLISHED"}).select("category status thumbnail views title")
+      .sort({ createdAt: -1 })
+      .lean();
+
+   return res.status(200).json({
+      success: true,
+      message: "Articles fetched successfully",
+      data: articles,
+    });
+
+
+} catch (error) {
+next(error)  
+}
+
+}
+
+
 export const getmyArticles=async(req:Request,res:Response,next:NextFunction)=>{
 try {
  
@@ -398,6 +419,40 @@ const article = await Article.findById(articleid);
   }
 }
 
+
+export const getSingleuserArticle=async(req:Request,res:Response,next:NextFunction)=>{
+  try {
+
+  const {slug} = req.params
+
+ 
+
+    if (!slug) {
+      return res.status(400).json({
+        success: false,
+        message: "Article ID is required",
+      });
+    }
+
+
+const article = await Article.findOne({slug});
+
+  if (!article) {
+      return res.status(404).json({
+        success: false,
+        message: "Article not found",
+      });
+    }
+
+  return res.status(200).json({
+      success: true,
+      message: "Article fetched successfully",
+      data: article,
+    });
+  } catch (error) {
+    next(error)
+  }
+}
 
 
 

@@ -258,6 +258,26 @@ return res.status(200).json({success:true,message:"job application submited"})
 }
 
 
+export const getApplyedJob= async(req: Request,res: Response,next: NextFunction)=>{
+    try {
+     const getuser = req.user
+     if(!getuser || !getuser._id){
+        return res.status(404).json({success:false,message:"User Required"})
+     }
+    
+       
+     const applications = await Application.find({userId:getuser._id}).populate({path:"jobId",select:"location experience salary   title  companyName slug companyLogo status   category subcategory jobType workMode createdAt"})
+
+
+return res.status(200).json({success:true,applications})
+
+
+
+    } catch (error) {
+        next(error)
+    }
+}
+
 
 
 

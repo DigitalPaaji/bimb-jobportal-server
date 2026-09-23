@@ -199,3 +199,49 @@ await news.deleteOne()
         next(error)
     }
 }
+
+
+
+export const getUserNews = async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+     
+
+const news = await News.find({rejected:false}).select("title featuredImage publicationDate category ")
+
+return res.status(200).json({
+    success:true,
+    news
+})
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+
+
+export const getSingleUSerNews= async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+    
+        const slug = req?.params?.slug;
+
+         const news = await News.findOne({slug});
+
+         if(!news){
+            return res.status(404).json({
+                success:false,
+                message:"news not Find"
+            })
+         }
+
+return res.status(200).json({
+    success:true,
+    news
+})
+
+
+
+    } catch (error) {
+        next(error)
+    }
+}

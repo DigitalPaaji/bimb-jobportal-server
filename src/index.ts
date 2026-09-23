@@ -14,6 +14,8 @@ import AdminUsers from "./routes/AdminUsers"
 
 import userAuthRoutes from "./routes/userAuthRoutes"
 import userJobRoutes from "./routes/userJobRoutes"
+import ArticleUser from "./routes/ArticleUser"
+import NewsUser from "./routes/NewsUser"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import path from "path"
@@ -72,6 +74,8 @@ app.use("/api/v1/admin/user",AdminUsers)
 ///////////////       user       ////////
 app.use("/api/v1/user/auth",userAuthRoutes)
 app.use("/api/v1/user/job",userJobRoutes)
+app.use("/api/v1/user/articles",ArticleUser)
+app.use("/api/v1/user/news",NewsUser)
 
 
 
