@@ -206,7 +206,7 @@ export const getUserNews = async(req:Request,res:Response,next:NextFunction)=>{
     try {
      
 
-const news = await News.find({rejected:false}).select("title featuredImage publicationDate category ")
+const news = await News.find({rejected:false}).select("title featuredImage slug publicationDate category ")
 
 return res.status(200).json({
     success:true,

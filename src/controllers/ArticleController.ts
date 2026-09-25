@@ -347,7 +347,7 @@ return res.status(200).json({ success: true, message: "Article updated successfu
 export const getmyuserArticles=async(req:Request,res:Response,next:NextFunction)=>{
 try {
  
-  const articles = await Article.find({status:"PUBLISHED"}).select("category status thumbnail views title")
+  const articles = await Article.find({status:"PUBLISHED"}).select("category slug status thumbnail views title")
       .sort({ createdAt: -1 })
       .lean();
 
@@ -368,7 +368,7 @@ next(error)
 export const getmyArticles=async(req:Request,res:Response,next:NextFunction)=>{
 try {
  
-  const articles = await Article.find().select("category status thumbnail views title")
+  const articles = await Article.find().select("category slug status thumbnail views title")
       .sort({ createdAt: -1 })
       .lean();
 

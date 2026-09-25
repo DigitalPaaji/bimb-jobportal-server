@@ -114,6 +114,8 @@ const [jobs, totalJobs] = await Promise.all([
   }
 }
 
+
+
 export const getCategory=  async (req: Request,res: Response,next: NextFunction) => {
     try {
     
@@ -145,6 +147,7 @@ export const getFetureJob = async (req:Request,res:Response,next:NextFunction)=>
   }
 }
 
+
 export const getUrgentJob = async (req:Request,res:Response,next:NextFunction)=>{
   try {
    const jobs = await Job.find({isUrgent:true}).select(
@@ -162,6 +165,7 @@ export const getUrgentJob = async (req:Request,res:Response,next:NextFunction)=>
     next(error)
   }
 }
+
 
 export const getSingleJob = async(req:Request,res:Response,next:NextFunction)=>{
   try {
@@ -196,6 +200,7 @@ export const getSubCategory=  async (req: Request,res: Response,next: NextFuncti
         next(error)
     }
 }
+
 
 export const ApplyForJob= async(req: Request,res: Response,next: NextFunction)=>{
     try {
@@ -246,7 +251,7 @@ if(allReady_Applied){
     await job.save()
 
     user.jobappled.push(job._id)
-     user.save()
+     await user.save()
 
 return res.status(200).json({success:true,message:"job application submited"})
 
@@ -277,7 +282,4 @@ return res.status(200).json({success:true,applications})
         next(error)
     }
 }
-
-
-
 
