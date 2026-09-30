@@ -1,5 +1,5 @@
 import express from  "express";
-import { GetUser, loginByGoogle, loginUser, logoutUser, SignupUser, updateUser, verifyUser } from "../controllers/userController";
+import { ForgotPassword, GetUser, loginByGoogle, loginUser, logoutUser, ResetPassword, SignupUser, updateUser, verifyUser } from "../controllers/userController";
 import { UserMiddlewere } from "../middlewere/UserMiddlewere";
 import { UploadUser } from "../helper/Uploaduser";
 
@@ -16,4 +16,11 @@ routes.put("/update",UserMiddlewere,UploadUser.fields([
   { name: "image", maxCount: 1 },
   { name: "resume", maxCount: 1 },
 ]),updateUser)
+
+routes.put("/forgotpassword",ForgotPassword)
+routes.put("/resetpassword",ResetPassword)
+
+
+
+
 export default routes

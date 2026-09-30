@@ -1,11 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
 import User from "../models/userModel";
 import redis from "../helper/redis";
-import { sendOtpUser } from "../helper/sendOtpUser";
+import { SendForgotPasswordEmail, sendOtpUser } from "../helper/sendOtpUser";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import { OAuth2Client } from "google-auth-library";
 import { removeImage } from "../helper/DeleteImage";
+import crypto from "crypto";
 
 export const SignupUser = async(req:Request,res:Response,next:NextFunction)=>{
 try {
@@ -292,3 +293,137 @@ return res.status(404).json({success:false,message:"User not found "})
     next(error)
   }
 }
+
+
+
+export const ForgotPassword = async(req:Request,res:Response,next:NextFunction)=>{
+try {
+  const email = String(req.body.email || "")
+      .trim()
+      .toLowerCase();
+
+   if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+const user = await User.findOne({ email });
+  const message =
+      "If an account exists with this email, a reset link will be sent.";
+   if (!user) {
+      return res.status(200).json({
+        success: true,
+        message,
+      });
+    }
+
+
+ const token = crypto.randomBytes(32).toString("hex");
+ const hashedToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+const redisKey = `password-reset:${hashedToken}`;
+
+ await redis.set(
+      redisKey,
+      user._id.toString(),
+      { EX: 900 }
+    );
+ const resetLink = `${process.env.FRONTEND_URL_ONE}/reset-password?token=${token}`
+  try {
+      await SendForgotPasswordEmail(user.email, resetLink);
+    } catch (error) {
+      await redis.del(redisKey);
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message,
+    });
+} catch (error) {
+  next(error)
+}
+}
+
+
+
+export const ResetPassword  = async(req:Request,res:Response,next:NextFunction)=>{
+try {
+const { token, password, confirmPassword } = req.body;
+
+  if (
+      typeof token !== "string" ||
+      typeof password !== "string" ||
+      typeof confirmPassword !== "string"
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid request",
+      });
+    }
+
+     if (password.length < 8 || password.length > 72) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be between 8 and 72 characters",
+      });
+    }
+if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Passwords do not match",
+      });
+    }
+
+const hashedToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+
+const redisKey = `password-reset:${hashedToken}`;
+ const userId = await redis.get(redisKey);
+
+    if (!userId) {
+      await redis.del(redisKey)
+      return res.status(400).json({
+        success: false,
+        message: "Reset link is invalid or expired",
+      });
+    }
+
+ await redis.del(redisKey)
+
+   const user = await User.findById(userId);
+
+  if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Reset link is invalid or expired",
+      });
+    }
+
+user.password = await bcrypt.hash(password, 12);
+    await user.save();
+
+ return res.status(200).json({
+      success: true,
+      message: "Password reset successfully",
+    });
+
+
+
+
+
+
+
+
+} catch (error) {
+  next(error)
+}
+
+}
+
+

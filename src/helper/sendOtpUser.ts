@@ -271,3 +271,46 @@ export const sendOtpUser = async (
   }
 };
 
+
+
+
+
+export const SendForgotPasswordEmail = async(email:string,resetLink:string)=>{
+  try {
+    const html=`
+          <div style="font-family: Arial, sans-serif; max-width: 550px; margin: auto;">
+            <h2>Reset Your Password</h2>
+
+            <p>We received a request to reset your password.</p>
+
+            <p>This link expires in 15 minutes.</p>
+
+            <a
+              href="${resetLink}"
+              style="display:inline-block;padding:12px 24px;background:#153497;color:white;text-decoration:none;border-radius:6px;"
+            >
+              Reset Password
+            </a>
+
+            <p>If you did not request this, ignore this email.</p>
+          </div>
+        `
+
+await transporter.sendMail({
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Reset Your Password",
+    html
+})
+
+ return { success: true };
+
+
+    
+  } catch (error) {
+    return error
+  }
+
+}
+
+
