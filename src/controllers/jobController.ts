@@ -78,6 +78,13 @@ export const createJob = async (req: Request,res: Response,next: NextFunction) =
         message: "Category is required",
       });
     } 
+
+    // if(!experience.min){
+    //     return res.status(400).json({
+    //     success: false,
+    //     message: "Min Experience is required",
+    //   });
+    // }
     
     const randomNumber = Math.floor(100000 + Math.random() * 900000);
   const jobTitle = title.trim();
@@ -122,7 +129,7 @@ applicationDeadline,contactEmail,contactPhone,vacancies,status,isFeatured:isFeat
       removeImage(companyLogo);
     }
 
-    next(error);
+    return res.status(500).json({success:false,message:error})
   }
 };
 

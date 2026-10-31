@@ -205,7 +205,7 @@ const JobSchema = new Schema<IJob>(
     experience: {
       min: {
         type: Number,
-        required: true,
+      
         min: 0,
       },
 
