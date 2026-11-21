@@ -122,3 +122,61 @@ get single Article
 
 http://localhost:8000/api/v1/user/news/get/:slug
 
+
+
+
+
+
+///////////////// client //////
+
+search candidat by subcategory
+GET  
+http://localhost:8000/api/v1/client/candidates/get/:subcateID?page=1
+
+
+sighnup Client  POST
+http://localhost:8000/api/v1/client/signup 
+{fullname,email,password}
+
+
+verify Client POST
+http://localhost:8000/api/v1/client/verify 
+{fullname,email,password,otp}
+
+
+login Client POST
+http://localhost:8000/api/v1/client/login 
+{email,password}
+
+
+login  by google Client POST
+http://localhost:8000/api/v1/client/login-google 
+{token}
+
+
+logout client  GET
+
+http://localhost:8000/api/v1/client/logout
+
+
+get client GET
+
+http://localhost:8000/api/v1/client/get
+
+
+forgotpassoword   PUT
+http://localhost:8000/api/v1/client/forgotpassword
+{email}
+
+resetpassword   PUT
+http://localhost:8000/api/v1/client/resetpassword
+
+{token, password, confirmPassword}
+
+
+
+for apply candidate 
+GET
+http://localhost:8000/api/v1/client/apply-candidate/:applicationId
+
+

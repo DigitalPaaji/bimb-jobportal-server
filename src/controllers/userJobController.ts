@@ -240,6 +240,8 @@ if(allReady_Applied){
 
      const application = await Application.create({
         userId:user._id,
+        categoryId:job.category,
+        subcategoryId:job.subcategory,
         jobId:job._id,
         resume:user.resume,
         coverLetter,

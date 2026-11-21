@@ -11,6 +11,8 @@ export type ApplicationStatus =
 export interface IApplication extends Document {
   userId: Types.ObjectId;
   jobId: Types.ObjectId;
+  categoryId: Types.ObjectId;
+  subcategoryId: Types.ObjectId;
 
 
   resume: string;
@@ -56,7 +58,18 @@ const ApplicationSchema = new Schema<IApplication>(
       required: true,
       index: true,
     },
-
+     categoryId:{
+     type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+      index: true,
+     },
+     subcategoryId:{
+     type: Schema.Types.ObjectId,
+      ref: "Subcategory",
+      required: true,
+      index: true,
+     },
     jobId: {
       type: Schema.Types.ObjectId,
       ref: "Job",
